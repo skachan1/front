@@ -19,8 +19,8 @@ jobs:
         run: npm install
 
       - name: Run test frontend
-        #run: npm run test
-        run: echo Test
+        run: npm run test
+        #run: echo Test
 
   lint:
     runs-on: ubuntu-latest
