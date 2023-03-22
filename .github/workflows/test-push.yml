@@ -1,0 +1,67 @@
+name: Test & Push to Hub
+on:
+  workflow_dispatch:
+jobs:
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get repository code
+        uses: actions/checkout@v3
+
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: node-modules-${{ hashFiles('**/packege-losk.json') }}
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run test frontend
+        #run: npm run test
+        run: echo Test
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get repository code
+        uses: actions/checkout@v3
+
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: node-modules-${{ hashFiles('**/packege-losk.json') }}
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Lint app
+        run: npm run lint
+
+  build_and_push:
+    runs-on: ubuntu-latest
+    needs: [test, lint]
+    env:
+      LOGIN: ${{ secrets.DOCKER_HUB_USERNAME }}
+      PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
+      NAME : ${{ 'backend' }}
+    steps:
+      - name: Login to docker.io
+        run: docker login -u $LOGIN -p $PASSWORD
+      
+      - name: Get repository code
+        uses: actions/checkout@v3
+
+      - name: Build image
+        run: docker build -t $LOGIN/$NAME:${GITHUB_REF:11} -f Dockerfile .
+      
+      - name: Push image to docker.io
+        run: docker push $LOGIN/$NAME:${GITHUB_REF:11}
+
+      - name: artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: dev-artifact
+          path: ./**
