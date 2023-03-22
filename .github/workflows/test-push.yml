@@ -46,7 +46,7 @@ jobs:
     env:
       LOGIN: ${{ secrets.DOCKER_HUB_USERNAME }}
       PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
-      NAME : ${{ 'backend' }}
+      NAME : ${{ 'frontend' }}
     steps:
       - name: Login to docker.io
         run: docker login -u $LOGIN -p $PASSWORD
