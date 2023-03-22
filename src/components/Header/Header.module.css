@@ -1,0 +1,14 @@
+.buttons{
+  margin-left: auto;
+  display:flex;
+  gap:30px;
+}
+
+.box{
+  display: flex;
+  font-family: 'monospace';
+  font-weight: 700px;
+  letter-spacing: 0.3rem;
+  color: inherit;
+  text-decoration: none;
+}
