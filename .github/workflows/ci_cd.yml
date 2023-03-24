@@ -3,8 +3,9 @@ on:
   workflow_dispatch:
 jobs:
 
-  test:
+  lint:
     runs-on: ubuntu-latest
+    needs: [test]
     steps:
       - name: Get repository code
         uses: actions/checkout@v3
@@ -18,13 +19,11 @@ jobs:
           path: '**/node_modules'
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
-      - name: Tests
-        #run: npm run test --passWithNoTests
-        run: echo Test
+      - name: Lint app
+        run: npm run lint
 
-  lint:
+  test:
     runs-on: ubuntu-latest
-    needs: [test]
     steps:
       - name: Get repository code
         uses: actions/checkout@v3
@@ -35,8 +34,8 @@ jobs:
           path: '**/node_modules'
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
-      - name: Lint app
-        run: npm run lint
+      - name: Tests
+        run: npm run test
 
   build_and_push:
     runs-on: ubuntu-latest
