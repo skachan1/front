@@ -34,9 +34,6 @@ jobs:
           path: ~/.npm
           key: node-modules-${{ hashFiles('**/packege-losk.json') }}
 
-      - name: Install dependencies
-        run: npm install
-
       - name: Lint app
         run: npm run lint
 
@@ -53,6 +50,15 @@ jobs:
       
       - name: Get repository code
         uses: actions/checkout@v3
+
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: node-modules-${{ hashFiles('**/packege-losk.json') }}
+
+      - name: Build app
+        run: npm run build
 
       - name: Build image
         run: docker build -t $LOGIN/$NAME:${GITHUB_REF:11} -f Dockerfile .
