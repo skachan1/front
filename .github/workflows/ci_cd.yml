@@ -9,14 +9,14 @@ jobs:
       - name: Get repository code
         uses: actions/checkout@v3
 
+      - name: Install dependencies
+        run: npm install
+
       - name: Cache dependencies
         uses: actions/cache@v3
         with:
           path: ~/.npm
           key: node-modules-${{ hashFiles('**/packege-losk.json') }}
-
-      - name: Install dependencies
-        run: npm install
 
       - name: Run test frontend
         #run: npm run test --passWithNoTests
