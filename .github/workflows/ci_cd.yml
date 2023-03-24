@@ -24,15 +24,8 @@ jobs:
 
   lint:
     runs-on: ubuntu-latest
+    needs: [test]
     steps:
-      - name: Get repository code
-        uses: actions/checkout@v3
-
-      - name: Cache dependencies
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: node-modules-${{ hashFiles('**/packege-losk.json') }}
 
       - name: Lint app
         run: npm run lint
